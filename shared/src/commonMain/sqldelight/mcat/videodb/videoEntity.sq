@@ -1,0 +1,104 @@
+CREATE TABLE IF NOT EXISTS videolibrary (
+    title TEXT NOT NULL,
+    recommendedTime INTEGER NOT NULL,
+    activityType TEXT NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    source TEXT NOT NULL,
+    url TEXT NOT NULL,
+    isLearningPathActivity INTEGER NOT NULL,
+    sequenceId TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS videostatus (
+    id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    status TEXT NOT NULL,
+    isTestedOut INTEGER NOT NULL,
+    score INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS videochapters (
+    pos INTEGER NOT NULL,
+    videoId TEXT NOT NULL,
+    topicTime INTEGER NOT NULL ,
+    topicName TEXT NOT NULL,
+    status TEXT NOT NULL,
+    qualityScore TEXT NOT NULL,
+    isCurrentText INTEGER NOT NULL DEFAULT 0,
+    endTime INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS videotranscripts (
+    videoId TEXT NOT NULL,
+    num TEXT NOT NULL,
+    startTime INTEGER NOT NULL,
+    endTime INTEGER NOT NULL,
+    textValue TEXT NOT NULL,
+    isCurrentText INTEGER NOT NULL
+
+);
+
+insertVideoLibrary:
+INSERT INTO videolibrary VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+insertVideoStatus:
+INSERT INTO videostatus VALUES (?, ?, ?, ? , ?);
+
+insertVideoChapters:
+INSERT INTO videochapters VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+insertVideoTranscripts:
+INSERT INTO videotranscripts VALUES (?, ?, ?, ?, ?, ?);
+
+getAllVideoLibrary:
+SELECT * FROM videolibrary;
+
+getVideoChapters:
+SELECT * FROM videochapters WHERE videoId = ? ;
+
+getAllVideoTranscripts:
+SELECT * FROM videotranscripts;
+
+getVideoTranscripts:
+SELECT * FROM videotranscripts WHERE videoId = ?;
+
+deleteFromVideoChapters:
+DELETE FROM videochapters WHERE videoId = ? ;
+
+deleteFromVideoLibrary:
+DELETE FROM videolibrary ;
+
+deleteFromVideoStatus:
+DELETE FROM videostatus ;
+
+CREATE VIEW videoLibraryWithVideoStatus AS
+SELECT vs.id , vl.name , vl.source, vl.title , vl.description, vs.status , vl.recommendedTime , vl.activityType , vs.isTestedOut , vl.sequenceId FROM videolibrary vl JOIN videostatus vs ON vl.name = vs.name ;
+
+getAllVideoList:
+SELECT * FROM videoLibraryWithVideoStatus WHERE activityType ='video-set' ;
+
+getAllVideoListForSp:
+SELECT * FROM videoLibraryWithVideoStatus GROUP BY title;
+
+getVideoActivity:
+SELECT * FROM videoLibraryWithVideoStatus WHERE name = ? ;
+
+updateVideoCompletion:
+UPDATE videostatus SET id = ? ,status = ? , isTestedOut = ? WHERE name = ? ;
+
+updateVideoProgress:
+UPDATE videolibrary SET sequenceId = ? WHERE name = ?;
+
+insertVideoLibraryObject:
+INSERT INTO videolibrary VALUES ?;
+
+
+
+
+
+
+
+
+
+
