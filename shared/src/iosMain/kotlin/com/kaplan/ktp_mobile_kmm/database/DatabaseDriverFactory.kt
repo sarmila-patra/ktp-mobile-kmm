@@ -4,6 +4,6 @@ import com.squareup.sqldelight.db.SqlDriver
 
 actual class DatabaseDriverFactory {
     actual fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(Database.Schema, "KaplanSQLDatabase.db")
+        return NativeSqliteDriver(KmmDatabase.Schema, "KaplanSQLDatabase.db")
     }
 }

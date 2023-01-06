@@ -1,11 +1,12 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
     android()
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -16,10 +17,15 @@ kotlin {
         }
     }
 
+    val sqlDelightVersion = "1.5.3"
+    val coroutinesVersion = "1.6.2"
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("com.squareup.sqldelight:runtime:1.5.3")
+                implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
             }
         }
         val commonTest by getting {
@@ -29,7 +35,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation("com.squareup.sqldelight:android-driver:1.5.3")
+                implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
             }
         }
         val androidTest by getting
@@ -39,7 +45,7 @@ kotlin {
         val iosMain by creating {
 
             dependencies {
-                implementation("com.squareup.sqldelight:native-driver:1.5.3")
+                implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
             }
 
             dependsOn(commonMain)
@@ -60,8 +66,8 @@ kotlin {
 }
 
 android {
-    namespace = "com.kaplan.ktp_mobile_kmm"
     compileSdk = 32
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
         targetSdk = 32

@@ -9,14 +9,14 @@ import com.squareup.sqldelight.internal.copyOnWriteList
 import com.kaplan.ktp_mobile_kmm.queries.VideoEntityQueries
 import kotlin.reflect.KClass
 
- val KClass<Database>.schema: SqlDriver.Schema
+ val KClass<KmmDatabase>.schema: SqlDriver.Schema
   get() = DatabaseImpl.Schema
 
- fun KClass<Database>.newInstance(driver: SqlDriver): Database = DatabaseImpl(driver)
+ fun KClass<KmmDatabase>.newInstance(driver: SqlDriver): KmmDatabase = DatabaseImpl(driver)
 
 private class DatabaseImpl(
   driver: SqlDriver
-) : TransacterImpl(driver), Database {
+) : TransacterImpl(driver), KmmDatabase {
  /* override val taxonomyEntityQueries: TaxonomyEntityQueriesImpl =
       TaxonomyEntityQueriesImpl(this, driver)*/
 
